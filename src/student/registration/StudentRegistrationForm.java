@@ -7,94 +7,91 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+// فئة لإنشاء واجهة المستخدم لتسجيل الطلاب
 public class StudentRegistrationForm {
-    private JFrame frame;
-    private JTextField nameField;
-    private JTextField ageField;
-    private JComboBox<String> levelComboBox;
-    private JButton registerButton;
-    private JTable studentTable;
-    private DefaultTableModel tableModel;
-    private List<Student> studentList;
+    private JFrame frame; // إطار النافذة
+    private JTextField nameField; // حقل لإدخال اسم الطالب
+    private JComboBox<String> yearComboBox; // مربع اختيار لتحديد مستوى الطالب
+    private JButton addButton; // زر لإضافة الطالب إلى القائمة
+    private JTable studentTable; // جدول لعرض قائمة الطلاب
+    private DefaultTableModel tableModel; // نموذج للجدول
+    private List<Student> studentList; // قائمة لتخزين بيانات الطلاب
 
+    // المُنشئ لإنشاء الواجهة وتعيين الإجراءات
     public StudentRegistrationForm() {
         studentList = new ArrayList<>();
 
-        frame = new JFrame("Student Registration");
-        frame.setSize(600, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
+        frame = new JFrame("تسجيل الطلاب"); // إنشاء نافذة بعنوان "تسجيل الطلاب"
+        frame.setSize(600, 400); // تعيين حجم النافذة
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // تعيين عملية الإغلاق عند النقر على زر الإغلاق
+        frame.setLayout(null); // تعيين تخطيط النافذة ليكون مخصص
 
-        JLabel nameLabel = new JLabel("Name:");
-        nameLabel.setBounds(50, 50, 100, 25);
+        // إنشاء وتعيين مكونات الواجهة
+        JLabel nameLabel = new JLabel("الاسم:"); // تسمية لاسم الطالب
+        nameLabel.setBounds(50, 50, 100, 25); // تحديد موقع وحجم التسمية
         frame.add(nameLabel);
 
-        nameField = new JTextField();
-        nameField.setBounds(150, 50, 150, 25);
+        nameField = new JTextField(); // حقل نص لإدخال اسم الطالب
+        nameField.setBounds(150, 50, 150, 25); // تحديد موقع وحجم الحقل
         frame.add(nameField);
 
-        JLabel ageLabel = new JLabel("Age:");
-        ageLabel.setBounds(50, 100, 100, 25);
-        frame.add(ageLabel);
+        JLabel yearLabel = new JLabel("المستوى:"); // تسمية لمستوى الطالب
+        yearLabel.setBounds(50, 100, 100, 25); // تحديد موقع وحجم التسمية
+        frame.add(yearLabel);
 
-        ageField = new JTextField();
-        ageField.setBounds(150, 100, 150, 25);
-        frame.add(ageField);
+        String[] years = {"السنة الأولى", "السنة الثانية", "السنة الثالثة", "السنة الرابعة"}; // قائمة المستويات
+        yearComboBox = new JComboBox<>(years); // مربع اختيار يحتوي على قائمة المستويات
+        yearComboBox.setBounds(150, 100, 150, 25); // تحديد موقع وحجم مربع الاختيار
+        frame.add(yearComboBox);
 
-        JLabel levelLabel = new JLabel("Level:");
-        levelLabel.setBounds(50, 150, 100, 25);
-        frame.add(levelLabel);
+        addButton = new JButton("إضافة"); // زر لإضافة الطالب
+        addButton.setBounds(150, 150, 150, 25); // تحديد موقع وحجم الزر
+        frame.add(addButton);
 
-        String[] levels = {"First Year", "Second Year", "Third Year", "Fourth Year"};
-        levelComboBox = new JComboBox<>(levels);
-        levelComboBox.setBounds(150, 150, 150, 25);
-        frame.add(levelComboBox);
-
-        registerButton = new JButton("Register");
-        registerButton.setBounds(150, 200, 150, 25);
-        frame.add(registerButton);
-
-        String[] columnNames = {"Name", "Age", "Level"};
-        tableModel = new DefaultTableModel(columnNames, 0);
-        studentTable = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(studentTable);
-        scrollPane.setBounds(50, 250, 500, 100);
+        String[] columnNames = {"الاسم", "المستوى"}; // أسماء الأعمدة في الجدول
+        tableModel = new DefaultTableModel(columnNames, 0); // إنشاء نموذج للجدول
+        studentTable = new JTable(tableModel); // إنشاء جدول باستخدام النموذج
+        JScrollPane scrollPane = new JScrollPane(studentTable); // إنشاء نافذة تمرير للجدول
+        scrollPane.setBounds(50, 200, 500, 100); // تحديد موقع وحجم نافذة التمرير
         frame.add(scrollPane);
 
-        registerButton.addActionListener(new ActionListener() {
+        // إضافة حدث عند النقر على زر الإضافة
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name = nameField.getText();
-                int age = Integer.parseInt(ageField.getText());
-                String level = (String) levelComboBox.getSelectedItem();
+                String name = nameField.getText(); // الحصول على النص المدخل في حقل الاسم
+                String year = (String) yearComboBox.getSelectedItem(); // الحصول على المستوى المختار من مربع الاختيار
                 Student student;
 
-                switch (level) {
-                    case "First Year":
-                        student = new FirstYearStudent(name, age);
+                // تحديد نوع الطالب بناءً على المستوى المختار
+                switch (year) {
+                    case "السنة الأولى":
+                        student = new FirstYearStudent(name);
                         break;
-                    case "Second Year":
-                        student = new SecondYearStudent(name, age);
+                    case "السنة الثانية":
+                        student = new SecondYearStudent(name);
                         break;
-                    case "Third Year":
-                        student = new ThirdYearStudent(name, age);
+                    case "السنة الثالثة":
+                        student = new ThirdYearStudent(name);
                         break;
-                    case "Fourth Year":
-                        student = new FourthYearStudent(name, age);
+                    case "السنة الرابعة":
+                        student = new FourthYearStudent(name);
                         break;
                     default:
-                        throw new IllegalArgumentException("Unexpected value: " + level);
+                        throw new IllegalArgumentException("مستوى غير متوقع: " + year);
                 }
 
+                // إضافة الطالب إلى القائمة وتحديث الجدول
                 studentList.add(student);
-                tableModel.addRow(new Object[]{student.getName(), student.getAge(), level});
+                tableModel.addRow(new Object[]{student.getName(), year});
             }
         });
 
-        frame.setVisible(true);
+        frame.setVisible(true); // جعل النافذة مرئية
     }
 
+    // الدالة الرئيسية لتشغيل البرنامج
     public static void main(String[] args) {
-        new StudentRegistrationForm();
+        new StudentRegistrationForm(); // إنشاء كائن من الفئة وتشغيل الواجهة
     }
 }
