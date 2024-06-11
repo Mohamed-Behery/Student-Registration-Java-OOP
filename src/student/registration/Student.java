@@ -1,21 +1,27 @@
 package student.registration;
 
-// فئة تمثل الطالب
 public class Student {
     private String name;
+    private String level;
 
-    // المُنشئ
-    public Student(String name) {
+    public Student(String name, String level) {
         this.name = name;
+        this.level = level;
     }
 
-    // الحصول على الاسم
     public String getName() {
         return name;
     }
 
-    // تعيين الاسم
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }
